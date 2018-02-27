@@ -4,6 +4,7 @@
         "http://struts.apache.org/dtds/struts-2.5.dtd">
 <!--Struts2的配置文件-->
 <struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
 <package name="/" extends="struts-default" namespace="/">
     <action name="h1" class="com.qf.web.action.HelloAction" method="execute">
         <result name="hello" >hello.html</result>
@@ -27,8 +28,16 @@
     </global-results>
     <global-allowed-methods>regex:.*</global-allowed-methods>
     <!--第一种全称静态访问-->
-    <action name="fw1" method="h1" class="com.qf.web.action.FwAction">
-    </action>
+    <!--<action name="fw1" method="h1" class="com.qf.web.action.FwAction">
+    </action>-->
+
+    <!--<action name="*" class="com.qf.web.action.FwAction" method="{1}"></action>-->
+    <!--模糊匹配-->
+    <!--<action name="*_*" class="com.qf.web.action.FwAction" method="{1}{2}"/>-->
+
+    <action name="fw2" class="com.qf.web.action.FwAction"/>
+
 </package>
 
+<include file="struts_param.xml"/>
 </struts>

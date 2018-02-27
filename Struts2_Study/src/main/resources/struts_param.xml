@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <package name="basicpackage" extends="struts-default">
+        <!--自定义结果视图的类型-->
+        <result-types>
+            <result-type name="myResult" class="com.qf.web.result.MyResult"/>
+        </result-types>
+        <global-results>
+            <result name="my" type="myResult">/hello.html</result>
+            <result name="success">/success.html</result>
+            <result name="error">/error.html</result>
+        </global-results>
+        <!--演示自定义结果视图的使用-->
+    </package>
+    <package name="/" namespace="/" extends="basicpackage">
+        <action name="my" class="com.qf.web.action.MyResultAction" method="test"/>
+    </package>
+    <!--演示参数传入的方式,namespace不写就是根目录-->
+    <package name="/param" extends="basicpackage" namespace="/">
+        <action name="pa1" method="login" class="com.qf.web.action.ParamAction1"/>
+        <!--将参数封装到类,并将类作为成员变量-->
+        <action name="pa2" method="login" class="com.qf.web.action.ParamAction2"/>
+    </package>
+
+</struts>
