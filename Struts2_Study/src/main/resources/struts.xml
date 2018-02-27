@@ -4,7 +4,31 @@
         "http://struts.apache.org/dtds/struts-2.5.dtd">
 <!--Struts2的配置文件-->
 <struts>
+<package name="/" extends="struts-default" namespace="/">
+    <action name="h1" class="com.qf.web.action.HelloAction" method="execute">
+        <result name="hello" >hello.html</result>
+    </action>
+<action name="f" class="com.qf.web.action.FAction" method="hello">
+    <result name="success">hello.html</result>
+</action>
+<action name="s" class="com.qf.web.action.SAction" >
+    <result name="success">hello.html</result>
+</action>
+<action name="t" class="com.qf.web.action.TAction" method="hello">
+    <result name="success">hello.html</result>
+</action>
+</package>
+    <!--演示四种访问方式-->
 
-
+<package name="fw" extends="struts-default" namespace="/fw">
+    <!--全局结果匹配-->
+    <global-results>
+        <result name="success">/hello.html</result>
+    </global-results>
+    <global-allowed-methods>regex:.*</global-allowed-methods>
+    <!--第一种全称静态访问-->
+    <action name="fw1" method="h1" class="com.qf.web.action.FwAction">
+    </action>
+</package>
 
 </struts>
