@@ -23,6 +23,36 @@
         <action name="pa1" method="login" class="com.qf.web.action.ParamAction1"/>
         <!--将参数封装到类,并将类作为成员变量-->
         <action name="pa2" method="login" class="com.qf.web.action.ParamAction2"/>
+        <!--必须实现序列化接口-->
+        <action name="pa3" method="login" class="com.qf.web.action.ParamAction3"/>
+        <!--静态注入-->
+        <action name="pa4" method="login" class="com.qf.web.action.ParamAction3">
+            <param name="username">ccc</param>
+            <param name="password">ccc</param>
+        </action>
+    </package>
+    <!--拦截器的配置-->
+    <package name="intercep" namespace="/" extends="basicpackage">
+        <interceptors>
+            <!--声明自定义拦截器对象-->
+            <interceptor name="myinter" class="com.qf.web.interceptor.MyInterceptor"/>
+            <interceptor name="logininter" class="com.qf.web.interceptor.LoginInterceptor"/>
+            <!--将拦截器对象放入栈中-->
+            <interceptor-stack name="myinterstack">
+                <interceptor-ref name="logininter"/>
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="myinter"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="myinterstack"/>
+        <global-results>
+            <result name="success">/success.html</result>
+            <result name="login">/hello.html</result>
+        </global-results>
+        <action name="il" class="com.qf.web.action.ParamAction1" method="login">
+      <!--      <interceptor-ref name="myinterstack"/>-->
+        </action>
+        <action name="ll" class="com.qf.web.action.LoginAction" method="login"/>
     </package>
 
 </struts>
