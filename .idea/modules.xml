@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/S2SH_Maven/S2SH_Maven.iml" filepath="$PROJECT_DIR$/S2SH_Maven/S2SH_Maven.iml" />
       <module fileurl="file://$PROJECT_DIR$/Struts2.iml" filepath="$PROJECT_DIR$/Struts2.iml" />
       <module fileurl="file://$PROJECT_DIR$/Struts2_Study/Struts2_Study.iml" filepath="$PROJECT_DIR$/Struts2_Study/Struts2_Study.iml" />
     </modules>

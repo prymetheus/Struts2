@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="S2SH_Maven" />
         <module name="Struts2_Study" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="S2SH_Maven" target="1.8" />
       <module name="Struts2_Study" target="1.8" />
     </bytecodeTargetLevel>
   </component>
