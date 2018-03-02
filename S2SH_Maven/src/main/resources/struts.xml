@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+    <package name="student" namespace="/" extends="struts-default">
+<global-results>
+    <result name="list">/studentlist.jsp</result>
+    <result name="add">/studentadd.jsp</result>
+</global-results>
+        <global-allowed-methods>regex:.*</global-allowed-methods>
+        <action name="*" class="stu" method="{1}">
+            <!--文件上传拦截器-->
+            <interceptor-ref name="defaultStack">
+                <!--上传文件的最大字节-->
+                <param name="fileupload.maximumSize">1024000</param>
+                <!--上传文件的后缀-->
+                <param name="fileupload.allowedExtensions">.jpg,.png,.gif</param>
+            </interceptor-ref>
+        </action>
+    </package>
+</struts>
