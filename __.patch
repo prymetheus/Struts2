@@ -1,0 +1,639 @@
+Index: src/main/webapp/studentadd.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/studentadd.jsp	(revision )
++++ src/main/webapp/studentadd.jsp	(revision )
+@@ -0,0 +1,18 @@
++<%@ page contentType="text/html;charset=UTF-8" language="java" %>
++<%@ taglib prefix="s" uri="/struts-tags" %>
++<html>
++<head>
++    <title>新增学生</title>
++</head>
++<body>
++<h1>请天下第一程序员新增学生</h1>
++<s:form action="/add" method="POST" enctype="multipart/form-data">
++    <s:textfield name="name" label="姓名" ></s:textfield><br/>
++    <s:radio name="sex" label="性别" list="#{'男':'男','女':'女'}" ></s:radio><br/>
++    <s:select label="家乡" list="#{'北京':'北京','上海':'上海'}" name="home" ></s:select><br/>
++    <s:file label="头像" name="headerImg" ></s:file><br/>
++    <s:token></s:token>
++    <s:submit value="新增学生"></s:submit>
++</s:form>
++</body>
++</html>
+Index: src/main/resources/struts.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/struts.xml	(revision )
++++ src/main/resources/struts.xml	(revision )
+@@ -0,0 +1,24 @@
++<?xml version="1.0" encoding="UTF-8"?>
++
++<!DOCTYPE struts PUBLIC
++        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
++        "http://struts.apache.org/dtds/struts-2.5.dtd">
++
++<struts>
++    <package name="student" namespace="/" extends="struts-default">
++<global-results>
++    <result name="list">/studentlist.jsp</result>
++    <result name="add">/studentadd.jsp</result>
++</global-results>
++        <global-allowed-methods>regex:.*</global-allowed-methods>
++        <action name="*" class="stu" method="{1}">
++            <!--文件上传拦截器-->
++            <interceptor-ref name="defaultStack">
++                <!--上传文件的最大字节-->
++                <param name="fileupload.maximumSize">1024000</param>
++                <!--上传文件的后缀-->
++                <param name="fileupload.allowedExtensions">.jpg,.png,.gif</param>
++            </interceptor-ref>
++        </action>
++    </package>
++</struts>
+\ No newline at end of file
+Index: src/main/webapp/WEB-INF/web.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/web.xml	(revision )
++++ src/main/webapp/WEB-INF/web.xml	(revision )
+@@ -0,0 +1,26 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
++         version="3.1">
++    <!--spring的配置文件-->
++    <context-param>
++        <param-name>contextConfigLocation</param-name>
++        <param-value>classpath:spring.xml</param-value>
++    </context-param>
++    <!--配置上下文加载者监听器,放置进来还要监听触发-->
++    <listener>
++        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
++    </listener>
++ <filter>
++     <filter-name>struts2</filter-name>
++     <filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
++ </filter>
++    <filter-mapping>
++        <filter-name>struts2</filter-name>
++        <url-pattern>/*</url-pattern>
++    </filter-mapping>
++    <welcome-file-list>
++        <welcome-file>/studentadd.jsp</welcome-file>
++    </welcome-file-list>
++</web-app>
+Index: S2SH_Maven.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- S2SH_Maven.iml	(revision )
++++ S2SH_Maven.iml	(revision )
+@@ -0,0 +1,65 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
++  <component name="FacetManager">
++    <facet type="web" name="Web">
++      <configuration>
++        <descriptors>
++          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" />
++        </descriptors>
++        <webroots>
++          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
++        </webroots>
++        <sourceRoots>
++          <root url="file://$MODULE_DIR$/src/main/resources" />
++        </sourceRoots>
++      </configuration>
++    </facet>
++    <facet type="Spring" name="Spring">
++      <configuration />
++    </facet>
++  </component>
++  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
++    <output url="file://$MODULE_DIR$/target/classes" />
++    <output-test url="file://$MODULE_DIR$/target/test-classes" />
++    <content url="file://$MODULE_DIR$">
++      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
++      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
++      <excludeFolder url="file://$MODULE_DIR$/target" />
++    </content>
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++    <orderEntry type="library" name="Maven: org.apache.struts:struts2-core:2.5.14.1" level="project" />
++    <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.26-incubating" level="project" />
++    <orderEntry type="library" name="Maven: ognl:ognl:3.1.15" level="project" />
++    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.9.1" level="project" />
++    <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.3.3" level="project" />
++    <orderEntry type="library" name="Maven: commons-io:commons-io:2.5" level="project" />
++    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.6" level="project" />
++    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-web:4.3.11.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-aop:4.3.11.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-beans:4.3.11.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-context:4.3.11.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.3.11.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-core:4.3.11.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-orm:4.3.11.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:4.3.11.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.3.11.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.springframework:spring-aspects:4.3.11.RELEASE" level="project" />
++    <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:5.2.10.Final" level="project" />
++    <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.3.0.Final" level="project" />
++    <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final" level="project" />
++    <orderEntry type="library" name="Maven: org.javassist:javassist:3.20.0-GA" level="project" />
++    <orderEntry type="library" name="Maven: antlr:antlr:2.7.7" level="project" />
++    <orderEntry type="library" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.1.Final" level="project" />
++    <orderEntry type="library" name="Maven: org.jboss:jandex:2.0.3.Final" level="project" />
++    <orderEntry type="library" name="Maven: com.fasterxml:classmate:1.3.0" level="project" />
++    <orderEntry type="library" name="Maven: dom4j:dom4j:1.6.1" level="project" />
++    <orderEntry type="library" name="Maven: org.hibernate.common:hibernate-commons-annotations:5.0.1.Final" level="project" />
++    <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.8.13" level="project" />
++    <orderEntry type="library" name="Maven: org.apache.struts:struts2-spring-plugin:2.5.14.1" level="project" />
++    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.38" level="project" />
++    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.8" level="project" />
++  </component>
++</module>
+\ No newline at end of file
+Index: src/main/java/com/qf/dao/StudentDao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/qf/dao/StudentDao.java	(revision )
++++ src/main/java/com/qf/dao/StudentDao.java	(revision )
+@@ -0,0 +1,31 @@
++package com.qf.dao;
++
++import com.qf.domain.Student;
++import org.hibernate.SessionFactory;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Repository;
++
++import java.util.List;
++@Repository
++public class StudentDao {
++    @Autowired
++    private SessionFactory factory;
++    //新增
++    public boolean addStudent(Student  student){
++
++        return (Long)factory.getCurrentSession().save(student)>0l;
++    }
++    //查询
++    public List<Student> query(){
++        //factory.getCurrentSession().createNativeQuery("SELECT * FROM t_student",Student.class).getResultList();
++return factory.getCurrentSession().createQuery("from Student",Student.class).getResultList();
++    }
++    //修改
++    public void updateStudent(Student student){
++        factory.getCurrentSession().update(student);
++    }
++    //删除
++    public void deleteStudent(Student student){
++        factory.getCurrentSession().delete(student);
++    }
++}
+Index: src/main/resources/spring.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/spring.xml	(revision )
++++ src/main/resources/spring.xml	(revision )
+@@ -0,0 +1,65 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<beans xmlns="http://www.springframework.org/schema/beans"
++       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++       xmlns:context="http://www.springframework.org/schema/context"
++       xmlns:tx="http://www.springframework.org/schema/tx"
++       xmlns:aop="http://www.springframework.org/schema/aop"
++       xsi:schemaLocation="
++       http://www.springframework.org/schema/beans
++       http://www.springframework.org/schema/beans/spring-beans.xsd
++       http://www.springframework.org/schema/context
++       http://www.springframework.org/schema/context/spring-context.xsd
++        http://www.springframework.org/schema/tx
++        http://www.springframework.org/schema/tx/spring-tx.xsd
++http://www.springframework.org/schema/aop
++ http://www.springframework.org/schema/aop/spring-aop.xsd
++">
++
++
++    <context:component-scan base-package="com.qf.dao,com.qf.service,com.qf.web.action"/>
++    <context:property-placeholder location="classpath:*.properties"/>
++    <!--数据库连接池-->
++    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
++        <property name="driverClassName" value="${jdbc.driver}" />
++        <property name="url" value="${jdbc.url}" />
++        <property name="username" value="${jdbc.username}" />
++        <property name="password" value="${jdbc.password}" />
++        <property name="filters" value="stat" />
++        <property name="maxActive" value="20" />
++        <property name="initialSize" value="1" />
++        <property name="minIdle" value="1" />
++        <property name="maxWait" value="60000" />
++        <property name="timeBetweenEvictionRunsMillis" value="60000" />
++        <property name="minEvictableIdleTimeMillis" value="300000" />
++        <property name="testWhileIdle" value="true" />
++        <property name="testOnBorrow" value="false" />
++        <property name="testOnReturn" value="false" />
++        <property name="poolPreparedStatements" value="true" />
++        <property name="maxOpenPreparedStatements" value="20" />
++    </bean>
++    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
++        <property name="dataSource" ref="dataSource"/>
++        <property name="hibernateProperties">
++            <props>
++                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</prop>
++                <prop key="hibernate.show_sql">true</prop>
++                <prop key="hibernate.format_sql">true</prop>
++                <prop key="hibernate.hbm2ddl.auto">update</prop>
++                <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</prop>
++            </props>
++        </property>
++        <property name="packagesToScan" value="com.qf.domain"/>
++    </bean>
++    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
++        <property name="sessionFactory" ref="sessionFactory" />
++    </bean>
++    <tx:advice id="transactionInterceptor" transaction-manager="transactionManager">
++        <tx:attributes>
++            <tx:method name="*" />
++        </tx:attributes>
++    </tx:advice>
++    <aop:config >
++        <aop:pointcut id="tranput" expression="execution(* com.qf.service.*.*(..))"/>
++        <aop:advisor advice-ref="transactionInterceptor" pointcut-ref="tranput"/>
++    </aop:config>
++</beans>
+\ No newline at end of file
+Index: src/main/java/com/qf/domain/Student.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/qf/domain/Student.java	(revision )
++++ src/main/java/com/qf/domain/Student.java	(revision )
+@@ -0,0 +1,59 @@
++package com.qf.domain;
++
++import javax.persistence.*;
++
++@Entity
++@Table(name="t_user")
++public class Student {
++    @Id
++    @GeneratedValue(strategy = GenerationType.IDENTITY)
++    private long id;
++    @Column(length = 20)
++    private String name;
++    @Column(length = 200)
++    private String imgUrl;
++    @Column(length = 4)
++    private String sex;
++    @Column(length = 20)
++    private String home;
++
++    public long getId() {
++        return id;
++    }
++
++    public void setId(long id) {
++        this.id = id;
++    }
++
++    public String getName() {
++        return name;
++    }
++
++    public void setName(String name) {
++        this.name = name;
++    }
++
++    public String getImgUrl() {
++        return imgUrl;
++    }
++
++    public void setImgUrl(String imgUrl) {
++        this.imgUrl = imgUrl;
++    }
++
++    public String getSex() {
++        return sex;
++    }
++
++    public void setSex(String sex) {
++        this.sex = sex;
++    }
++
++    public String getHome() {
++        return home;
++    }
++
++    public void setHome(String home) {
++        this.home = home;
++    }
++}
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pom.xml	(revision )
++++ pom.xml	(revision )
+@@ -0,0 +1,84 @@
++<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
++  <modelVersion>4.0.0</modelVersion>
++  <groupId>com.qf</groupId>
++  <artifactId>S2SH_Maven</artifactId>
++  <packaging>war</packaging>
++  <version>1.0</version>
++  <name>S2SH_Maven Maven Webapp</name>
++  <url>http://maven.apache.org</url>
++    <!--Struts2+Spring+Hibernate-->
++    <dependencies>
++        <!--struts2-->
++        <!-- https://mvnrepository.com/artifact/org.apache.struts/struts2-core -->
++        <dependency>
++            <groupId>org.apache.struts</groupId>
++            <artifactId>struts2-core</artifactId>
++            <version>2.5.14.1</version>
++        </dependency>
++        <!--servlet-->
++        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
++        <dependency>
++            <groupId>javax.servlet</groupId>
++            <artifactId>javax.servlet-api</artifactId>
++            <version>3.1.0</version>
++            <scope>provided</scope>
++        </dependency>
++
++        <!--spring-->
++        <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-web</artifactId>
++            <version>4.3.11.RELEASE</version>
++        </dependency>
++        <!-- https://mvnrepository.com/artifact/org.springframework/spring-orm -->
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-orm</artifactId>
++            <version>4.3.11.RELEASE</version>
++        </dependency>
++
++        <!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
++        <dependency>
++            <groupId>org.springframework</groupId>
++            <artifactId>spring-aspects</artifactId>
++            <version>4.3.11.RELEASE</version>
++        </dependency>
++        <!--hibernate-->
++        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
++        <dependency>
++            <groupId>org.hibernate</groupId>
++            <artifactId>hibernate-core</artifactId>
++            <version>5.2.10.Final</version>
++        </dependency>
++        <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
++        <dependency>
++            <groupId>org.aspectj</groupId>
++            <artifactId>aspectjweaver</artifactId>
++            <version>1.8.13</version>
++        </dependency>
++        <!--struts2和spring的整合插件-->
++        <!-- https://mvnrepository.com/artifact/org.apache.struts/struts2-spring-plugin -->
++        <dependency>
++            <groupId>org.apache.struts</groupId>
++            <artifactId>struts2-spring-plugin</artifactId>
++            <version>2.5.14.1</version>
++        </dependency>
++        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
++        <dependency>
++            <groupId>mysql</groupId>
++            <artifactId>mysql-connector-java</artifactId>
++            <version>5.1.38</version>
++        </dependency>
++        <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
++        <dependency>
++            <groupId>com.alibaba</groupId>
++            <artifactId>druid</artifactId>
++            <version>1.1.8</version>
++        </dependency>
++    </dependencies>
++  <build>
++    <finalName>S2SH_Maven</finalName>
++  </build>
++</project>
+Index: src/main/webapp/studentlist.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/studentlist.jsp	(revision )
++++ src/main/webapp/studentlist.jsp	(revision )
+@@ -0,0 +1,32 @@
++<%@ taglib prefix="s" uri="/struts-tags" %>
++<%@ page contentType="text/html;charset=UTF-8" language="java" %>
++<html>
++<head>
++    <title>学生列表</title>
++</head>
++<body>
++<h1>学生列表</h1>
++<h3><a href="/queryList">刷新数据</a> </h3>
++<table>
++    <tr>
++        <th>序号</th>
++        <th>姓名</th>
++        <th>头像</th>
++        <th>性别</th>
++        <th>家乡</th>
++        <th>操作</th>
++    </tr>
++    <%--循环--%>
++    <s:iterator value="#request.list" var="s">
++        <tr>
++            <td><s:property value="#s.id"></s:property> </td>
++            <td><s:property value="#s.name"></s:property> </td>
++            <td><img src="../s2shimgs/${s.imgUrl}" width="100px" height="100px"/> </td>
++            <td><s:property value="#s.sex"></s:property> </td>
++            <td><s:property value="#s.home"></s:property> </td>
++            <td><a href="#">删除</a><a href="#">修改</a> </td>
++        </tr>
++    </s:iterator>
++</table>
++</body>
++</html>
+Index: src/main/webapp/index.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/index.jsp	(revision )
++++ src/main/webapp/index.jsp	(revision )
+@@ -0,0 +1,5 @@
++<html>
++<body>
++<h2>Hello World!</h2>
++</body>
++</html>
+Index: src/main/resources/dbconfig.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/dbconfig.properties	(revision )
++++ src/main/resources/dbconfig.properties	(revision )
+@@ -0,0 +1,4 @@
++jdbc.driver=com.mysql.jdbc.Driver
++jdbc.url=jdbc:mysql://localhost:3306/db_case?characterEncoding=utf-8
++jdbc.username=root
++jdbc.password=111111
+\ No newline at end of file
+Index: src/main/java/com/qf/service/StudentService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/qf/service/StudentService.java	(revision )
++++ src/main/java/com/qf/service/StudentService.java	(revision )
+@@ -0,0 +1,34 @@
++package com.qf.service;
++
++import com.qf.dao.StudentDao;
++import com.qf.domain.Student;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.util.List;
++
++@Service
++public class StudentService {
++    @Autowired
++    private StudentDao dao;
++    //新增
++    public boolean addStudent(Student student){
++
++        return dao.addStudent(student);
++    }
++    //查询
++    public List<Student> query(){
++        //return factory.getCurrentSession().createNativeQuery("select * from t_student",Student.class).getResultList();
++        return dao.query();
++    }
++    //修改
++    public void updateStudent(Student student){
++        dao.updateStudent(student);
++    }
++    //删除
++    public void deleteStudent(long id){
++        ;Student student=new Student();
++        student.setId(id);
++        dao.deleteStudent(student);
++    }
++}
+Index: src/main/java/com/qf/web/action/StudentAction.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/qf/web/action/StudentAction.java	(revision )
++++ src/main/java/com/qf/web/action/StudentAction.java	(revision )
+@@ -0,0 +1,84 @@
++package com.qf.web.action;
++
++import com.opensymphony.xwork2.ActionSupport;
++import com.opensymphony.xwork2.ModelDriven;
++import com.qf.domain.Student;
++import com.qf.service.StudentService;
++import org.apache.commons.io.FileUtils;
++import org.apache.struts2.ServletActionContext;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Controller;
++
++import javax.servlet.http.HttpServletRequest;
++import java.io.File;
++import java.io.IOException;
++@Controller("stu")
++public class StudentAction extends ActionSupport implements ModelDriven<Student> {
++    @Autowired
++    private StudentService service;
++    //就是为了传参
++    private Student student=new Student();
++    @Override
++    public Student getModel() {
++        return null;
++    }
++    //如果属性多了可以独立封装
++    private File headerImg;//获取上传的文件对象，那么file标签的name名称
++    private String headerImgFileName;//获取上传的文件名
++    private String headerImgContentType;//获取上传的MIME类型
++
++    public File getHeaderImg() {
++        return headerImg;
++    }
++
++    public void setHeaderImg(File headerImg) {
++        this.headerImg = headerImg;
++    }
++
++    public String getHeaderImgFileName() {
++        return headerImgFileName;
++    }
++
++    public void setHeaderImgFileName(String headerImgFileName) {
++        this.headerImgFileName = headerImgFileName;
++    }
++
++    public String getHeaderImgContentType() {
++        return headerImgContentType;
++    }
++
++    public void setHeaderImgContentType(String headerImgContentType) {
++        this.headerImgContentType = headerImgContentType;
++    }
++
++    //新增
++    public String add() throws IOException {
++        if(student!=null){
++            //头像保存--图片上传
++            //获取保存图片的路径
++            File dir=new File(new File(ServletActionContext.getServletContext().getRealPath("/")).getParent(),"s2shimgs");
++            if(!dir.exists()){
++                dir.mkdirs();
++            }
++            String fn=System.currentTimeMillis()+"_"+headerImgFileName;
++            File desFile=new File(dir,fn);
++            //拷贝文件
++            FileUtils.copyFile(headerImg,desFile);
++            System.out.println("头像上传成功："+desFile.getAbsolutePath());
++            //数据保存
++            student.setImgUrl(fn);
++            System.out.println("新增学生："+service.addStudent(student));
++            return "list";
++        }else {
++            return "add";
++        }
++    }
++    //删除
++    //修改
++    //查询
++    public String queryList(){
++        HttpServletRequest request= ServletActionContext.getRequest();
++        request.setAttribute("list",service.query());
++        return "list";
++    }
++}
